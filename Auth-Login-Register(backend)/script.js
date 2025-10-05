@@ -8,16 +8,13 @@ app.put("/", (req,res)=>{
 
 app.post("/", (req, res) => {
     const userName = req.body.username;
-    const password = req.body.password;  
     
 });
 app.get("/", (req, res) => {
-    const userName = req.body.username;
-    const password = req.body.password;  
+    const userName = req.body.username;  
     
 });
 app.delete("/", (req, res) => {
-    const userName = req.body.username;
-    const password = req.body.password;  
+    const userName = req.body.username;  
     
 });
