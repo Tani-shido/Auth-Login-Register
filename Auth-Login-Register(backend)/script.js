@@ -1,12 +1,21 @@
 const express = require("express");
 const app = express();
 import * as z from "zod";
+<<<<<<< HEAD
 // const mongoose  = require("mongoose");
 // const { UserModel } = require("./db.js");
 app.use(express.json());
 const port = 3000;
 
 // mongoose.connect("mongodb+srv://shikaridota777:ZClPvfWjJINgzaFN@cluster0.12wqhve.mongodb.net/Auth-Login");
+=======
+const mongoose  = require("mongoose");
+const { UserModel } = require("./db.js");
+app.use(express.json());
+const port = 3000;
+
+mongoose.connect(MONGO_URL);
+>>>>>>> 36a90f8d670d24a454fa6f9db3bcafd221b13361
 
 app.post("/Signin", (req,res)=>{
     const userName = req.body.username;
