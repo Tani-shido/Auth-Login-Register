@@ -1,20 +1,50 @@
 const express = require("express");
 const app = express();
+import * as z from "zod";
+const mongoose  = require("mongoose");
+const { UserModel } = require("./db.js");
+app.use(express.json());
+const port = 3000;
 
-app.put("/", (req,res)=>{
+mongoose.connect(MONGO_URL);
+
+app.post("/Signin", (req,res)=>{
     const userName = req.body.username;
-    const password = req.body.password;  
+    console.log("User Name: ", userName);
+
+    const password = req.body.password;
+    console.log("User password: ", password);
+
+    if(userName === '' && password.length < 9){
+        res.json({
+            message: "Incorrect Details"
+        });
+    }
+    else{
+
+        res.json({
+            message: "Details recieved",
+            userName, password
+        });
+    }
 });
 
-app.post("/", (req, res) => {
+app.post("/Login", (req, res)=>{
     const userName = req.body.username;
-    
+    console.log("User Name: ", userName);
+
+    const password = req.body.password;
+    console.log("User password: ", password);
+
+    res.json({
+        message: "You are Logged In",
+        userName, password
+    });
 });
-app.get("/", (req, res) => {
-    const userName = req.body.username;  
-    
-});
-app.delete("/", (req, res) => {
-    const userName = req.body.username;  
-    
+
+
+
+
+app.listen(port, ()=>{
+    console.log(`Server is runnig on http://localhost:${port}`)
 });
