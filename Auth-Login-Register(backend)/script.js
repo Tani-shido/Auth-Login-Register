@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose  = require("mongoose");
 const { UserModel } = require("./db.js");
+const { authMiddleware } = require("./middleware.js");
 app.use(express.json());
 const port = 3000;
 
