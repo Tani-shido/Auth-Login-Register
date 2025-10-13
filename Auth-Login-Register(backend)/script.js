@@ -10,7 +10,7 @@ const { UserModel } = require("./db");
 
 const connectDB = async function (){
     try{
-        await mongoose.connect("mongodb+srv://shikaridota777:ZClPvfWjJINgzaFN@cluster0.12wqhve.mongodb.net/Auth-Login");
+        await mongoose.connect("MONGO_URL");
         console.log("DB connected");
     }catch(e){
         console.error(err.message);
