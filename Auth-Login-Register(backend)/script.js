@@ -3,8 +3,9 @@ const app = express();
 app.use(express.json());
 const port = 3000;
 const jwt = require("jsonwebtoken");
-const JWT_SECRET = "MY_SECRET_KEY";
-
+const dotenv = require('dotenv');
+const JWT_SECRET_KEY = "MySecret";
+dotenv.config();
 const mongoose  = require("mongoose");
 const { UserModel } = require("./db");
 
@@ -17,6 +18,7 @@ const connectDB = async function (){
     }
 }
 connectDB();
+
 
 
 app.post("/SignUp", async (req,res) =>{
@@ -45,9 +47,13 @@ app.post("/SignUp", async (req,res) =>{
                         username: userName,
                         password:  password
                     });
+
+                    const token = jwt.sign({userName, password}, JWT_SECRET_KEY);
+                    console.log(token);
+
                     return res.json({
                         message: "Details recieved and saved in DB",
-                        value
+                        token
                     });
                 }
                 catch(error){
@@ -65,6 +71,7 @@ app.get("/LogIn", async (req, res)=>{
     try{
         const userName = req.body.username;
         const password = req.body.password;
+        const tokenVal = req.headers.token
 // User Name validation
         if(/^[A-Za-z]+$/.test(userName) === false){
             res.json({
@@ -80,21 +87,32 @@ app.get("/LogIn", async (req, res)=>{
             }
             else{
                 console.log("User Name & password (after validation) FOR LOGIN: ", userName, password);
-                const findDetails = await UserModel.findOne({
-                    username: userName,
-                    password: password
-                });
-                if(!findDetails){
-                    console.log("User not found");
-                    res.json({
-                        message: "Credentials are wrong"
-                    });
+                try{
+                    const decodedToken = jwt.verify(tokenVal, JWT_SECRET_KEY);
+                    console.log(decodedToken);
+                    if(decodedToken.userName === userName){
+                        if(decodedToken.password === password){
+                            console.log("User found");
+                            res.json({
+                                message: "You are Logged In"
+                            });
+                        }
+                        else{
+                            console.log("Token not found");
+                            res.json({
+                                message: "Token is wrong"
+                            });    
+                        }
+                    }
+                    else{
+                        console.log("User not found");
+                        res.json({
+                            message: "Credentials are wrong"
+                        });
+                    }
                 }
-                else{
-                    console.log("User found");
-                    res.json({
-                    message: "You are Logged In"
-                    });
+                catch(e){
+                    console.log("error");
                 }
             }
         }
@@ -105,8 +123,6 @@ app.get("/LogIn", async (req, res)=>{
         });
     }
 });
-
-
 
 app.listen(port, ()=>{
     console.log(`Server is runnig on http://localhost:${port}`)
