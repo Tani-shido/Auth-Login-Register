@@ -1,14 +1,17 @@
 import { useState } from 'react'
 import './App.css'
-import Navbar from './Components/Navbar'
 import Main from './Components/Main'
 
 function App() {
 
   return<>
-  <div>Hi there</div>
-  <div><Navbar /></div>
-  <div><Main /></div>
+  <div className='bg-gray-500 h-screen w-screen'>
+    <div className='h-full w-7xl mx-auto p-4 flex'>
+      <div className='w-full h-full flex items-center justify-center'><Main /></div>
+    </div>
+  </div>
+  
+  
   </>
 }
 
